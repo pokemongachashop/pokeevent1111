@@ -1,0 +1,49 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": "auth != null && auth.token.email == 'ADMIN_EMAIL_HERE'",
+
+    "entries": {
+      ".read": "auth != null",
+      "$round": {
+        "$uid": {
+          ".write": "auth != null && auth.uid == $uid && !data.exists()",
+          ".validate": "newData.hasChildren(['nickname', 'joinedAt', 'round']) && newData.child('nickname').isString() && newData.child('nickname').val().length >= 1 && newData.child('nickname').val().length <= 20 && newData.child('joinedAt').val() == now && newData.child('round').isNumber() && newData.child('round').val() > now && newData.child('round').val() - now <= 7200000 && newData.child('round').val() % 7200000 == 1800000"
+        }
+      }
+    },
+
+    "names": {
+      ".read": "auth != null",
+      "$round": {
+        "$key": {
+          ".write": "auth != null && !data.exists() && newData.val() == auth.uid && newData.parent().parent().parent().child('entries').child($round).child(auth.uid).exists()"
+        }
+      }
+    },
+
+    "history": {
+      ".read": "auth != null",
+      "$round": {
+        ".write": "auth != null && !data.exists()",
+        ".validate": "newData.hasChildren(['round', 'status', 'total', 'endsAt']) && newData.child('round').isNumber() && newData.child('round').val() <= now && newData.child('round').val() % 7200000 == 1800000 && newData.child('endsAt').isNumber() && newData.child('endsAt').val() <= now && newData.child('total').isNumber() && (newData.child('status').val() == 'canceled' || (newData.child('status').val() == 'played' && newData.child('winner/nickname').isString()))"
+      }
+    },
+
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        ".validate": "newData.hasChildren(['nickname']) && newData.child('nickname').isString() && newData.child('nickname').val().length <= 20"
+      }
+    },
+
+    "presence": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && auth.uid == $uid",
+        ".validate": "newData.isBoolean()"
+      }
+    }
+  }
+}
