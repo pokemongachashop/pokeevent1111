@@ -409,12 +409,12 @@ const ADMIN_EMAIL = 'pokepack1010@gmail.com';
 // 기본값은 UTC 짝수 시 30분 = 한국 시간 홀수 시 30분 (예: 03:30 -> 05:30 -> 07:30).
 // 이 두 숫자를 바꾸면 database.rules.json 안의 7200000, 1800000 도 똑같이 바꿔야 합니다.
 const SCHEDULE = {
-  INTERVAL_MS: 300000,   // 2시간
-  OFFSET_MS: 0,     // 30분
+  INTERVAL_MS: 7200000,   // 2시간
+  OFFSET_MS: 1800000,     // 30분
 };
 
 const GAME = {
-  MIN_PLAYERS: 2,         // 이 인원 미만이면 취소
+  MIN_PLAYERS: 6,         // 이 인원 미만이면 취소
   MAX_PLAYERS: 30,        // 한 회차 최대 캐릭터 수 (먼저 참가한 순)
   COUNTDOWN_MS: 10000,    // 마감 후 배틀 시작까지 카운트다운
   RESULT_HOLD_MS: 60000,  // 배틀 종료 후 결과 화면 유지 시간
